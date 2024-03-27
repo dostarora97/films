@@ -3,7 +3,6 @@ export const MOVIES: string[] = [
   "Adaptation (2002)",
   "Annihilation (2018)",
   "Anomalisa (2015)",
-  "Arrival (2016)",
   "Being John Malkovich (1999)",
   "Beyond the Black Rainbow (2010)",
   "Cloud Atlas (2012)",
