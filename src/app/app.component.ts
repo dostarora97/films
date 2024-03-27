@@ -4,13 +4,13 @@ import { tablize, useOrFallback } from './utils/util';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { MovieInfo, OMDBResponse } from './models';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { CachedFilmPosterService } from './services/cached-film-poster.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [AsyncPipe, HttpClientModule ],
+  imports: [ AsyncPipe, HttpClientModule, NgOptimizedImage ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

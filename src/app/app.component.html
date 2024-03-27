@@ -6,7 +6,7 @@
           <div class="card">
             <span>{{col.name}}</span>
             <a [href]="'https://www.youtube.com/results?search_query=' + col.name + '+trailer'" target="_blank">
-              <img [src]="col.poster | async" alt="poster">
+              <img ngSrc="{{col.poster | async}}" alt="poster" [width]="300" [height]="435" [priority]="true">
             </a>
           </div>
         </td>
