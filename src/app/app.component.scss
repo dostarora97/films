@@ -1,0 +1,23 @@
+table {
+  width: 100%;
+  border-spacing: 1em;
+  background-color: lightyellow;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: lightgray;
+  width: 100%;
+  height: 100%;
+
+  span {
+    background-color: lightgreen;
+  }
+}
+
+td, th {
+  border: 1px solid black;
+}
