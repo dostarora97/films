@@ -17,7 +17,12 @@ mat-grid-list {
 
   h2 {
     margin: 0;
-    background-color: lightgreen;
+    background-color: lightyellow;
+    padding-left: 0.5em;
+    width: 80%;
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    text-align: center;
   }
 
   .actions {

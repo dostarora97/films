@@ -10,8 +10,9 @@
     @for (film of filteredFilms(); track film.name) {
       <mat-grid-tile>
         <div class="card">
-          <h2>{{film.name}} | {{(film.omdbInfo | async)?.imdbRating}}</h2>
+          <h2>{{film.name}}</h2>
           <div class="actions">
+            <span>Imdb: <span class="rating">{{(film.omdbInfo | async)?.imdbRating}}</span></span>
             <a [href]="'https://www.youtube.com/results?search_query=' + film.name + '+trailer'" target="_blank">
               <span>Trailer</span>
             </a>
