@@ -1,7 +1,9 @@
-table {
-  width: 100%;
-  border-spacing: 1em;
+div.container {
   background-color: lightyellow;
+}
+
+mat-grid-list {
+  margin: 1em;
 }
 
 .card {
@@ -17,10 +19,6 @@ table {
     margin: 0;
     background-color: lightgreen;
   }
-}
-
-td, th {
-  border: 1px solid black;
 }
 
 form.film-form {

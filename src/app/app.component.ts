@@ -1,6 +1,6 @@
-import { Component, computed, effect, inject, Signal, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FILMS } from './data/data';
-import { tablize, useOrFallback } from './utils/util';
+import { useOrFallback } from './utils/util';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { debounceTime, map, Observable, shareReplay, tap } from 'rxjs';
 import { FilmInfo, OMDBResponse } from './models';
@@ -11,11 +11,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { MatGridList, MatGridTile } from '@angular/material/grid-list';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ AsyncPipe, HttpClientModule, FormsModule, MatFormFieldModule, MatInputModule ],
+  imports: [ AsyncPipe, HttpClientModule, FormsModule, MatFormFieldModule, MatInputModule, MatGridList, MatGridTile ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -25,7 +26,12 @@ export class AppComponent {
   private readonly platform = inject(Platform);
 
   private readonly API_KEY = 'a529ee3e';
-  private readonly colNum = (this.platform.IOS || this.platform.ANDROID) ? 1 : 4;
+  protected readonly colNum = (this.platform.IOS || this.platform.ANDROID) ? 1 : 4;
+  private readonly infoAwareFilms = Array.from<string, FilmInfo>(
+    FILMS, (filmName => ({
+      name: filmName,
+      omdbInfo: this.getFilmInfo(filmName)
+    })));
 
   protected searchText = signal('');
   private readonly searchTextDebounced = toSignal(toObservable(this.searchText)
@@ -34,15 +40,11 @@ export class AppComponent {
     ), {
     initialValue: ''
   });
-  private readonly allFilms = computed(() => FILMS.filter(film =>
-    film.toLowerCase().includes(this.searchTextDebounced().toLowerCase())));
-  private readonly films = computed(() => Array.from<string, FilmInfo>(
-    this.allFilms(), (filmName => ({
-      name: filmName,
-      omdbInfo: this.getFilmInfo(filmName)
-    }))));
-  protected readonly filmsTable: Signal<FilmInfo[][]> = computed(() =>
-    tablize<FilmInfo>(this.films(), this.colNum));
+
+  protected readonly filteredFilms = computed(() =>
+    this.infoAwareFilms.filter(film =>
+      film.name.toLowerCase().includes(this.searchTextDebounced().toLowerCase())));
+
 
   private getFilmInfo(filmName: string): Observable<OMDBResponse> {
     const cachedFilmInfo$ = this.getCachedFilmInfo(filmName);
