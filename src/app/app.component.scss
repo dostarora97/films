@@ -19,6 +19,13 @@ mat-grid-list {
     margin: 0;
     background-color: lightgreen;
   }
+
+  .actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+  }
 }
 
 form.film-form {

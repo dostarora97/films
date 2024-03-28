@@ -11,9 +11,14 @@
       <mat-grid-tile>
         <div class="card">
           <h2>{{film.name}} | {{(film.omdbInfo | async)?.imdbRating}}</h2>
-          <a [href]="'https://www.youtube.com/results?search_query=' + film.name + '+trailer'" target="_blank">
-            <span>Trailer</span>
-          </a>
+          <div class="actions">
+            <a [href]="'https://www.youtube.com/results?search_query=' + film.name + '+trailer'" target="_blank">
+              <span>Trailer</span>
+            </a>
+            <a [href]="'https://v2.vidsrc.me/embed/' + (film.omdbInfo | async)?.imdbID" target="_blank">
+              <span>Watch</span>
+            </a>
+          </div>
           <a [href]="'https://v2.vidsrc.me/embed/' + (film.omdbInfo | async)?.imdbID" target="_blank">
             <img [src]="(film.omdbInfo | async)?.Poster" alt="poster" [width]="300" [height]="435">
           </a>
