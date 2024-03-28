@@ -23,7 +23,7 @@ export class AppComponent {
   private readonly cachedFilmInfoService = inject(CachedFilmInfoService);
   private readonly platform = inject(Platform);
   private readonly API_KEY = 'a529ee3e';
-  protected readonly searchText = signal('');
+  protected searchText = signal('');
   private readonly allFilms = computed(() => {
     return FILMS.filter(film => film.toLowerCase().includes(this.searchText().toLowerCase()))
   });
