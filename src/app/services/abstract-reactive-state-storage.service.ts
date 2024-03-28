@@ -6,7 +6,7 @@ import { StorageService } from './storage.service';
 export abstract class AbstractReactiveStateStorageService<State> {
   public readonly state$: Observable<State>;
 
-  protected readonly storageService: StorageService;
+  private readonly storageService: StorageService;
 
   private readonly stateSubject: BehaviorSubject<State>;
 

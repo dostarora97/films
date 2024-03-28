@@ -6,6 +6,7 @@ import { catchError, map, Observable, of, tap } from 'rxjs';
 import { MovieInfo, OMDBResponse } from './models';
 import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { CachedFilmPosterService } from './services/cached-film-poster.service';
+import { Platform } from '@angular/cdk/platform';
 
 @Component({
   selector: 'app-root',
@@ -15,17 +16,19 @@ import { CachedFilmPosterService } from './services/cached-film-poster.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  private readonly API_KEY = 'a529ee3e';
   private readonly httpClient = inject(HttpClient);
   private readonly posterCacheService = inject(CachedFilmPosterService);
-
+  private readonly platform = inject(Platform);
+  private readonly API_KEY = 'a529ee3e';
   private readonly allMovies = MOVIES;
+  private readonly colNum = this.platform.isBrowser ? 4 : 1;
+
   protected readonly movies = Array.from<string, MovieInfo>(
     this.allMovies, (movieName => ({
       name: movieName,
       poster: this.getMoviePosterUrl(movieName)
   })));
-  protected readonly tables: MovieInfo[][] = tablize<MovieInfo>(this.movies, 4);
+  protected readonly tables: MovieInfo[][] = tablize<MovieInfo>(this.movies, this.colNum);
 
   protected getMoviePosterUrl(movieName: string): Observable<string> {
     const cachedPoster$ = this.getCachedPoster(movieName);
