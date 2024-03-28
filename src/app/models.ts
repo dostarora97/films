@@ -41,7 +41,7 @@ export interface OMDBResponse {
   Response: string
 }
 
-export interface MovieInfo {
+export interface FilmInfo {
   name: string,
-  poster: Observable<string>
+  omdbInfo: Observable<OMDBResponse>
 }

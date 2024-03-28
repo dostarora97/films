@@ -15,11 +15,11 @@ function tablizeHelper<T>(arr: T[], c: number, acc: T[][]): T[][] {
   return tablizeHelper(remainingArr, c, [...acc, innerArr]);
 }
 
-export function useOrFallback<T>(
-  toBeUsed: Observable<T>,
-  useWhenPredicate: (value: T) => boolean,
-  fallback: Observable<T>
-): Observable<T> {
+export function useOrFallback<Use, Fallback = Use>(
+  toBeUsed: Observable<Use>,
+  useWhenPredicate: (value: Use) => boolean,
+  fallback: Observable<Fallback>
+): Observable<Use|Fallback> {
   return toBeUsed
     .pipe(
       take(1),

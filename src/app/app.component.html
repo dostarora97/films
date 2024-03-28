@@ -4,9 +4,9 @@
       @for (col of row; track col) {
         <td>
           <div class="card">
-            <span>{{col.name}}</span>
+            <span>{{col.name}} | {{(col.omdbInfo | async)?.imdbRating}}</span>
             <a [href]="'https://www.youtube.com/results?search_query=' + col.name + '+trailer'" target="_blank">
-              <img ngSrc="{{col.poster | async}}" alt="poster" [width]="300" [height]="435" [priority]="true">
+              <img [src]="(col.omdbInfo | async)?.Poster" alt="poster" [width]="300" [height]="435">
             </a>
           </div>
         </td>

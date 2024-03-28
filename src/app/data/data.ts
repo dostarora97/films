@@ -1,4 +1,4 @@
-export const MOVIES: string[] = [
+export const FILMS: string[] = [
   "A Scanner Darkly (2006)",
   "Adaptation (2002)",
   "Annihilation (2018)",
