@@ -1,12 +1,22 @@
+<form class="film-form">
+  <mat-form-field class="film-name-search">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}">
+  </mat-form-field>
+</form>
+
 <table>
-  @for (row of tables; track row) {
+  @for (filmsRow of filmsTable(); track filmsRow) {
     <tr>
-      @for (col of row; track col) {
+      @for (film of filmsRow; track film) {
         <td>
           <div class="card">
-            <span>{{col.name}} | {{(col.omdbInfo | async)?.imdbRating}}</span>
-            <a [href]="'https://www.youtube.com/results?search_query=' + col.name + '+trailer'" target="_blank">
-              <img [src]="(col.omdbInfo | async)?.Poster" alt="poster" [width]="300" [height]="435">
+            <h2>{{film.name}} | {{(film.omdbInfo | async)?.imdbRating}}</h2>
+            <a [href]="'https://www.youtube.com/results?search_query=' + film.name + '+trailer'" target="_blank">
+              <span>Trailer</span>
+            </a>
+            <a [href]="'https://v2.vidsrc.me/embed/' + (film.omdbInfo | async)?.imdbID" target="_blank">
+              <img [src]="(film.omdbInfo | async)?.Poster" alt="poster" [width]="300" [height]="435">
             </a>
           </div>
         </td>

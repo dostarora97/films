@@ -1,17 +1,20 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, effect, inject, Signal, signal } from '@angular/core';
 import { FILMS } from './data/data';
 import { tablize, useOrFallback } from './utils/util';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { map, Observable, shareReplay, tap } from 'rxjs';
 import { FilmInfo, OMDBResponse } from './models';
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { CachedFilmInfoService } from './services/cached-film-info.service';
 import { Platform } from '@angular/cdk/platform';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ AsyncPipe, HttpClientModule, NgOptimizedImage ],
+  imports: [ AsyncPipe, HttpClientModule, FormsModule, MatFormFieldModule, MatInputModule ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -20,15 +23,22 @@ export class AppComponent {
   private readonly cachedFilmInfoService = inject(CachedFilmInfoService);
   private readonly platform = inject(Platform);
   private readonly API_KEY = 'a529ee3e';
-  private readonly allFilms = FILMS;
+  protected readonly searchText = signal('');
+  private readonly allFilms = computed(() => {
+    return FILMS.filter(film => film.toLowerCase().includes(this.searchText().toLowerCase()))
+  });
   private readonly colNum = (this.platform.IOS || this.platform.ANDROID) ? 1 : 4;
-  private readonly films = Array.from<string, FilmInfo>(
-    this.allFilms, (filmName => ({
-      name: filmName,
-      omdbInfo: this.getFilmInfo(filmName)
-  })));
+  private readonly films = computed(() => {
+    return Array.from<string, FilmInfo>(
+      this.allFilms(), (filmName => ({
+        name: filmName,
+        omdbInfo: this.getFilmInfo(filmName)
+      })));
+  });
 
-  protected readonly tables: FilmInfo[][] = tablize<FilmInfo>(this.films, this.colNum);
+  protected readonly filmsTable: Signal<FilmInfo[][]> = computed(() => {
+    return tablize<FilmInfo>(this.films(), this.colNum);
+  });
 
   private getFilmInfo(filmName: string): Observable<OMDBResponse> {
     const cachedFilmInfo$ = this.getCachedFilmInfo(filmName);
