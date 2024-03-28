@@ -21,7 +21,7 @@ export class AppComponent {
   private readonly platform = inject(Platform);
   private readonly API_KEY = 'a529ee3e';
   private readonly allMovies = MOVIES;
-  private readonly colNum = this.platform.isBrowser ? 4 : 1;
+  private readonly colNum = (this.platform.IOS || this.platform.ANDROID) ? 1 : 4;
 
   protected readonly movies = Array.from<string, MovieInfo>(
     this.allMovies, (movieName => ({
