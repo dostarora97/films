@@ -25,7 +25,7 @@ mat-grid-list {
     text-align: center;
   }
 
-  .actions {
+  .film-info {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -39,8 +39,11 @@ mat-grid-list {
 
 form.film-form {
   padding: 1em;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
 }
 
 .film-name-search {
-  width: 100%;
+  flex-grow: 1;
 }

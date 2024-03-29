@@ -4,25 +4,42 @@
       <mat-label>Search</mat-label>
       <input matInput [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}">
     </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Sort</mat-label>
+      <mat-select [(value)]="selectedFilmSort">
+        @for(sort of filmSorts; track sort) {
+          <mat-option [value]="sort">{{sort}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Order</mat-label>
+      <mat-select [(value)]="selectedSortOrder">
+        <mat-option [value]="1">Ascending</mat-option>
+        <mat-option [value]="-1">Descending</mat-option>
+      </mat-select>
+    </mat-form-field>
   </form>
 
   <mat-grid-list [cols]="colNum" [rowHeight]="'520px'" [gutterSize]="'2em'">
-    @for (film of filteredFilms(); track film.name) {
+    @for (film of filteredSortedFilms(); track film.name) {
       <mat-grid-tile>
         <div class="card">
           <h2>{{film.name.slice(0, -6)}}</h2>
-          <div class="actions">
-            <span>Year: <span class="year">{{(film.omdbInfo | async)?.Year}}</span></span>
-            <span>Imdb: <span class="rating">{{(film.omdbInfo | async)?.imdbRating}}</span></span>
+          <div class="film-info">
+            <span>Year: <span class="year">{{film.omdbInfo.Year}}</span></span>
+            <span>Imdb: <span class="rating">{{film.omdbInfo.imdbRating}}</span></span>
             <a [href]="'https://www.youtube.com/results?search_query=' + film.name + '+trailer'" target="_blank">
               <span>Trailer</span>
             </a>
-            <a [href]="'https://v2.vidsrc.me/embed/' + (film.omdbInfo | async)?.imdbID" target="_blank">
+            <a [href]="'https://v2.vidsrc.me/embed/' + film.omdbInfo.imdbID" target="_blank">
               <span>Watch</span>
             </a>
           </div>
-          <a [href]="'https://v2.vidsrc.me/embed/' + (film.omdbInfo | async)?.imdbID" target="_blank">
-            <img [src]="(film.omdbInfo | async)?.Poster" alt="poster" [width]="300" [height]="435">
+          <a [href]="'https://v2.vidsrc.me/embed/' + film.omdbInfo.imdbID" target="_blank">
+            <img [src]="film.omdbInfo.Poster" alt="poster" [width]="300" [height]="435">
           </a>
         </div>
       </mat-grid-tile>

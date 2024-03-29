@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AbstractReactiveStateStorageService } from './abstract-reactive-state-storage.service';
-import { FilmInfo, OMDBResponse } from '../models';
+import { OMDBResponse } from '../models';
 
 @Injectable({
   providedIn: 'root'

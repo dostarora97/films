@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
 
 export interface OMDBResponse {
-  "Title": string,
-  Year: string,
+  Title: string,
+  Year: number,
   Released: string,
   Runtime: string,
   Genre: string,
@@ -13,7 +13,7 @@ export interface OMDBResponse {
   Writer: string,
   Language: string,
   Country: string,
- Awards: string,
+  Awards: string,
   Poster: string,
   Ratings: [
     {
@@ -30,7 +30,7 @@ export interface OMDBResponse {
     }
   ],
   Metascore: string,
-  imdbRating: string,
+  imdbRating: number,
   imdbVotes: string,
   imdbID: string,
   Type: string,
@@ -41,7 +41,20 @@ export interface OMDBResponse {
   Response: string
 }
 
-export interface FilmInfo {
+export interface AsyncFilmInfo {
   name: string,
   omdbInfo: Observable<OMDBResponse>
 }
+
+export interface FilmInfo {
+  name: string,
+  omdbInfo: OMDBResponse
+}
+
+export enum FilmSort {
+  NAME = 'Name',
+  YEAR_RELEASED = 'Year released',
+  IMDB_RATING = 'IMDB rating'
+}
+
+export type Comparator<T> = (a: T, b: T) => number;
