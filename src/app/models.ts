@@ -58,3 +58,10 @@ export enum FilmSort {
 }
 
 export type Comparator<T> = (a: T, b: T) => number;
+
+export interface VersionInfo {
+  hash: string,
+  timestamp: string
+}
+
+export type Optional<T> = T | undefined;

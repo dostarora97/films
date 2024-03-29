@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FILMS } from './data/data';
 import { FilmComparator, useOrFallback } from './utils/util';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {
   combineLatest,
   debounceTime,
@@ -31,12 +31,13 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
+import { VersionService } from './services/version.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   standalone: true,
-  imports: [ AsyncPipe, HttpClientModule, FormsModule, MatFormFieldModule, MatInputModule, MatGridListModule, MatSelectModule ],
+  imports: [ AsyncPipe, FormsModule, MatFormFieldModule, MatInputModule, MatGridListModule, MatSelectModule ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -44,6 +45,7 @@ export class AppComponent {
   private readonly httpClient = inject(HttpClient);
   private readonly cachedFilmInfoService = inject(CachedFilmInfoService);
   private readonly platform = inject(Platform);
+  protected readonly versionCode: string | undefined = inject(VersionService).getCachedVersionCode();
 
   private readonly API_KEY = 'a529ee3e';
   protected readonly colNum = (this.platform.IOS || this.platform.ANDROID) ? 1 : 4;
