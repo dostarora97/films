@@ -75,7 +75,7 @@ export abstract class StorageService {
 }
 
 export abstract class NamespaceAwareStorageService extends StorageService {
-  protected abstract getNamespace(key: string): string
+  protected abstract buildNamespaceStorageKey(key: string): string
   protected abstract getNameSpaceStorageKeys(): string[]
   public abstract removeAllNameSpaceAwareItems(): void
   public abstract removeAllOtherNameSpaceAwareItems(): void

@@ -12,16 +12,16 @@ export class BuildAwareNamespacedStorageService extends NamespaceAwareStorageSer
   private storagePrefix: string | undefined;
 
   public override getItem(key: string): string | null {
-    return localStorage.getItem(this.getNamespace(key));
+    return localStorage.getItem(this.buildNamespaceStorageKey(key));
   }
 
   public override setItem(key: string, value: string): void {
-    localStorage.setItem(this.getNamespace(key), value);
+    localStorage.setItem(this.buildNamespaceStorageKey(key), value);
   }
 
   public override removeItem(key: string): void {
     console.log(+Date.now(), 'BuildAwareNamespacedStorageService', 'removing', key);
-    localStorage.removeItem(this.getNamespace(key));
+    localStorage.removeItem(this.buildNamespaceStorageKey(key));
   }
 
   public override removeAllItems(): void {
@@ -29,8 +29,8 @@ export class BuildAwareNamespacedStorageService extends NamespaceAwareStorageSer
       .forEach(key => this.removeItem(key));
   }
 
-  protected override getNamespace(key: string): string {
-    return `${this.getNameSpacePrefixKey()}-${key}`;
+  protected override buildNamespaceStorageKey(key: string): string {
+    return `${this.getNameSpacePrefixKey()}.${key}`;
   }
 
   protected override getNameSpaceStorageKeys(): string[] {
