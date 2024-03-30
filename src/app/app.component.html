@@ -41,7 +41,7 @@
             </a>
           </div>
           <a [href]="'https://v2.vidsrc.me/embed/' + film.omdbInfo.imdbID" target="_blank">
-            <img ngSrc="{{film.omdbInfo.Poster}}" alt="poster" [width]="300" [height]="435">
+            <img ngSrc="{{film.omdbInfo.Poster}}" alt="poster" [width]="300" [height]="435" [priority]="true">
           </a>
         </div>
       </mat-grid-tile>

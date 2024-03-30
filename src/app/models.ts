@@ -65,3 +65,18 @@ export interface VersionInfo {
 }
 
 export type Optional<T> = T | undefined;
+
+export abstract class StorageService {
+  public abstract getItem(key: string): string | null
+  public abstract setItem(key: string, value: string): void
+  public abstract removeItem(key: string): void
+  public abstract removeAllItems(): void
+  protected abstract getAllStorageKeys(): string[]
+}
+
+export abstract class NamespaceAwareStorageService extends StorageService {
+  protected abstract getNamespace(key: string): string
+  protected abstract getNameSpaceStorageKeys(): string[]
+  public abstract removeAllNameSpaceAwareItems(): void
+  public abstract removeAllOtherNameSpaceAwareItems(): void
+}

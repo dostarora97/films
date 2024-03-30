@@ -1,7 +1,5 @@
-import { inject } from '@angular/core';
-
 import { BehaviorSubject, Observable } from 'rxjs';
-import { StorageService } from './storage.service';
+import { StorageService } from '../models';
 
 export abstract class AbstractReactiveStateStorageService<State> {
   public readonly state$: Observable<State>;
@@ -10,8 +8,10 @@ export abstract class AbstractReactiveStateStorageService<State> {
 
   private readonly stateSubject: BehaviorSubject<State>;
 
-  protected constructor() {
-    this.storageService = inject(StorageService);
+  protected constructor(
+    private nameSpacedStorageService: StorageService
+  ) {
+    this.storageService = nameSpacedStorageService;
     this.stateSubject = new BehaviorSubject<State>(this.initState());
     this.state$ = this.stateSubject.asObservable();
   }

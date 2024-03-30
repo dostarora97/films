@@ -1,7 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AbstractReactiveStateStorageService } from './abstract-reactive-state-storage.service';
 import { OMDBResponse } from '../models';
-import { VersionService } from './version.service';
+import { BuildAwareNamespacedStorageService } from './build-aware-namespaced-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +10,11 @@ export class CachedFilmInfoService
   extends AbstractReactiveStateStorageService<Map<string, OMDBResponse>> {
   protected static readonly EMPTY_CACHE: Map<string, OMDBResponse> = new Map();
   protected static readonly CACHE_KEY = 'film-info';
-  protected readonly versionService: VersionService = inject(VersionService);
 
-  constructor() {
-    super();
+  constructor(
+    storageService: BuildAwareNamespacedStorageService
+  ) {
+    super(storageService);
   }
 
   protected defaultState(): Map<string, OMDBResponse> {
@@ -21,8 +22,7 @@ export class CachedFilmInfoService
   }
 
   protected persistedStateKey(): string {
-    const versionSource = this.versionService || inject(VersionService);
-    return `${CachedFilmInfoService.CACHE_KEY}-${versionSource.getCachedVersionCode() || ''}`;
+    return `${CachedFilmInfoService.CACHE_KEY}`;
   }
 
   protected override serialize(stateObj: Map<string, OMDBResponse>): string {

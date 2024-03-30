@@ -68,3 +68,8 @@ export const FilmComparator: Record<FilmSort, Comparator<OMDBResponse>> = {
   [FilmSort.YEAR_RELEASED]: filmYearComparator,
   [FilmSort.IMDB_RATING]: filmImdbRatingComparator
 }
+
+export function difference<T>(superArray: T[], subArray: T[]): T[] {
+  const subSet = new Set(subArray);
+  return superArray.filter(element => !subSet.has(element));
+}
