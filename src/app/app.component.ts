@@ -21,7 +21,7 @@ import {
   tap
 } from 'rxjs';
 import { AsyncFilmInfo, Comparator, FilmInfo, FilmSort, OMDBResponse } from './models';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { CachedFilmInfoService } from './services/cached-film-info.service';
 import { Platform } from '@angular/cdk/platform';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -32,12 +32,14 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { VersionService } from './services/version.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-root',
   standalone: true,
-  imports: [ AsyncPipe, FormsModule, MatFormFieldModule, MatInputModule, MatGridListModule, MatSelectModule ],
+  imports: [ AsyncPipe, FormsModule, MatFormFieldModule, MatInputModule, MatGridListModule,
+    MatSelectModule, MatTooltipModule, NgOptimizedImage ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

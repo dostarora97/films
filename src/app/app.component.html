@@ -28,7 +28,9 @@
       <mat-grid-tile>
         <div class="card">
           <h2>{{film.name.slice(0, -6)}}</h2>
-          <div class="film-info">
+          <div class="film-info" [matTooltip]="film.omdbInfo.Plot"
+               [matTooltipPositionAtOrigin]="false"
+               [matTooltipPosition]="'below'">
             <span>Year: <span class="year">{{film.omdbInfo.Year}}</span></span>
             <span>Imdb: <span class="rating">{{film.omdbInfo.imdbRating}}</span></span>
             <a [href]="'https://www.youtube.com/results?search_query=' + film.name + '+trailer'" target="_blank">
@@ -39,7 +41,7 @@
             </a>
           </div>
           <a [href]="'https://v2.vidsrc.me/embed/' + film.omdbInfo.imdbID" target="_blank">
-            <img [src]="film.omdbInfo.Poster" alt="poster" [width]="300" [height]="435">
+            <img ngSrc="{{film.omdbInfo.Poster}}" alt="poster" [width]="300" [height]="435">
           </a>
         </div>
       </mat-grid-tile>
