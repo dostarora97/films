@@ -26,7 +26,7 @@ export class BuildAwareNamespacedStorageService extends NamespaceAwareStorageSer
 
   public override removeAllItems(): void {
     this.getNameSpaceStorageKeys()
-      .forEach(key => this.removeItem(key));
+      .forEach(key => localStorage.removeItem(key));
   }
 
   protected override buildNamespaceStorageKey(key: string): string {
@@ -46,11 +46,11 @@ export class BuildAwareNamespacedStorageService extends NamespaceAwareStorageSer
 
   public override removeAllNameSpaceAwareItems(): void {
     this.getNameSpaceStorageKeys()
-      .forEach(key => this.removeItem(key));
+      .forEach(key => localStorage.removeItem(key));
   }
   public override removeAllOtherNameSpaceAwareItems(): void {
     difference(this.getAllStorageKeys(), this.getNameSpaceStorageKeys())
-      .forEach(key => this.removeItem(key));
+      .forEach(key => localStorage.removeItem(key));
   }
 
   private getNameSpacePrefixKey(): string {
