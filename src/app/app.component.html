@@ -23,7 +23,7 @@
     </mat-form-field>
   </form>
 
-  <mat-grid-list [cols]="colNum" [rowHeight]="'520px'" [gutterSize]="'2em'">
+  <mat-grid-list [cols]="colCount" [rowHeight]="'520px'" [gutterSize]="'2em'">
     @for (film of filteredSortedFilms(); track film.name) {
       <mat-grid-tile>
         <div class="card">

@@ -33,6 +33,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { VersionService } from './services/version.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { D } from '@angular/cdk/keycodes';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,10 +48,9 @@ export class AppComponent {
   private readonly httpClient = inject(HttpClient);
   private readonly cachedFilmInfoService = inject(CachedFilmInfoService);
   private readonly platform = inject(Platform);
-  protected readonly versionCode: string | undefined = inject(VersionService).getCachedVersionCode();
 
   private readonly API_KEY = 'a529ee3e';
-  protected readonly colNum = (this.platform.IOS || this.platform.ANDROID) ? 1 : 4;
+  protected readonly colCount = (this.platform.IOS || this.platform.ANDROID) ? 1 : 4;
   private readonly infoAwareFilms = Array.from<string, AsyncFilmInfo>(
     FILMS, (filmName => ({
       name: filmName,
@@ -88,7 +88,7 @@ export class AppComponent {
                 omdbInfo: filmInfo.omdbInfo
               }))
           ).pipe(
-            map(films => {
+            map((films: Array<FilmInfo>) => {
               const comparator: Comparator<OMDBResponse> = FilmComparator[ selectedFilmSortValue ];
               return films.sort((film1, film2) =>
                 selectedOrder * comparator(film1.omdbInfo, film2.omdbInfo)
@@ -136,6 +136,9 @@ export class AppComponent {
   private getCachedFilmInfo(filmName: string): Observable<OMDBResponse | undefined> {
     return this.cachedFilmInfoService.state$
       .pipe(
+        tap(filmInfo => {
+          console.log(+Date.now(), 'AppComponent state$ filmInfo', filmInfo)
+        }),
         map(filmInfoCache => filmInfoCache.get(filmName))
       );
   }

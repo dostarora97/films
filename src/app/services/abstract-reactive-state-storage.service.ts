@@ -1,19 +1,36 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, shareReplay, tap } from 'rxjs';
 import { StorageService } from '../models';
 
 export abstract class AbstractReactiveStateStorageService<State> {
-  public readonly state$: Observable<State>;
+  private readonly _state$: Observable<State>;
 
   private readonly storageService: StorageService;
 
   private readonly stateSubject: BehaviorSubject<State>;
 
   protected constructor(
-    private nameSpacedStorageService: StorageService
+    nameSpacedStorageService: StorageService
   ) {
     this.storageService = nameSpacedStorageService;
     this.stateSubject = new BehaviorSubject<State>(this.initState());
-    this.state$ = this.stateSubject.asObservable();
+    this._state$ = this.stateSubject.asObservable()
+      .pipe(
+        tap((state: State) => {
+          console.log(+Date.now(), 'AbstractReactiveStateStorageService state change before shareReplay', state);
+        }),
+        shareReplay({
+          bufferSize: 1,
+          refCount: false
+        }),
+        tap((state: State) => {
+          console.log(+Date.now(), 'AbstractReactiveStateStorageService state change after shareReplay', state);
+        })
+      );
+  }
+
+  public get state$(): Observable<State> {
+    console.log(+Date.now(), 'AbstractReactiveStateStorageService get state$');
+    return this._state$;
   }
 
   public get state(): State {
@@ -21,6 +38,7 @@ export abstract class AbstractReactiveStateStorageService<State> {
   }
 
   public set state(state: State) {
+    console.log(+Date.now(), 'AbstractReactiveStateStorageService set state', state);
     const isStatePersisted: boolean = this.persistState(state);
     if (isStatePersisted) {
       this.stateSubject.next(state);

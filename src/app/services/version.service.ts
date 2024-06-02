@@ -12,12 +12,17 @@ export class VersionService {
   private cachedVersionInfo: Optional<VersionInfo> = undefined
 
   public fetchVersionInfo(options: {preferCached: boolean} = {preferCached: true}): Observable<VersionInfo> {
-    if (options.preferCached && this.cachedVersionInfo) {
-      return of(this.cachedVersionInfo);
-    }
-    return this.httpClient.get<VersionInfo>(this.versionUrl)
+    const getVersionInfo$ = (): Observable<VersionInfo> => {
+      if (options.preferCached && this.cachedVersionInfo) {
+        return of(this.cachedVersionInfo);
+      }
+      return this.httpClient.get<VersionInfo>(this.versionUrl)
+        .pipe(
+          tap(versionInfo => this.cachedVersionInfo = versionInfo)
+        );
+    };
+    return getVersionInfo$()
       .pipe(
-        tap(versionInfo => this.cachedVersionInfo = versionInfo),
         shareReplay({
           bufferSize: 1,
           refCount: false
@@ -28,15 +33,15 @@ export class VersionService {
   public fetchVersionCode(options: {preferCached: boolean} = {preferCached: true}): Observable<string> {
     return this.fetchVersionInfo(options)
       .pipe(
-        map(versionInfo => `[${versionInfo.hash.slice(0, 6)}]-[${versionInfo.timestamp}]`),
-      )
+        map(this.buildVersionCode)
+      );
   }
 
   public getCachedVersionInfo(): Optional<VersionInfo> {
     return this.cachedVersionInfo;
   }
 
-  public getCachedVersionCode(): string | undefined {
+  public getCachedVersionCode(): Optional<string> {
     const cachedVersionInfo = this.getCachedVersionInfo();
     if (cachedVersionInfo) {
       return this.buildVersionCode(cachedVersionInfo)
